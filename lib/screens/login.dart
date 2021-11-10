@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:loginscreen/components/inputs_fields.dart';
+import 'package:loginscreen/screens/recover_password.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(40, 60, 40, 0),
+        padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
         child: ListView(
           children: [
             //logo da empresa:
@@ -67,7 +68,7 @@ class _LoginPageState extends State<LoginPage> {
                 height: 40,
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () => _openPageRecoveryPass(context),
                   child: const Text(
                     'Recuperar senha',
                     style: TextStyle(
@@ -139,7 +140,16 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _doLogin() async {
-    _formLoginKey.currentState
-        ?.validate(); //Valida os campos do formulário. Em caso de erro, mostra a msg definida.
+    //Valida os campos do formulário. Em caso de erro, mostra a msg definida.
+    _formLoginKey.currentState?.validate();
+  }
+
+  void _openPageRecoveryPass(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) {
+        return RecoveryPass();
+      }),
+    );
   }
 }
