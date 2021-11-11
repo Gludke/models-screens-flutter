@@ -2,7 +2,8 @@ import 'dart:html';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:loginscreen/components/inputs_fields.dart';
+import 'package:loginscreen/components/button_blue_gradient.dart';
+import 'package:loginscreen/components/inputs_fields_model_login.dart';
 import 'package:loginscreen/screens/recover_password.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
         padding: const EdgeInsets.fromLTRB(8, 16, 8, 0),
         child: ListView(
           children: [
-            //logo da empresa:
+            //LOGO DA EMPRESA:
             SizedBox(
               height: 256,
               width: 256,
@@ -40,7 +41,7 @@ class _LoginPageState extends State<LoginPage> {
               key: _formLoginKey,
               child: Column(
                 children: [
-                  //Input do E-mail:
+                  //INPUT DO E-MAIL:
                   FieldInput(
                     controller: _controllerFieldEmail,
                     minCharacters: 4,
@@ -48,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
                     msgError: 'Favor digitar um login válido',
                     textInputType: TextInputType.emailAddress,
                   ),
-                  //Input da Senha:
+                  //INPUT DA SENHA:
                   FieldInput(
                     controller: _controllerFieldPass,
                     minCharacters: 5,
@@ -60,8 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),
             ),
-
-            //Botão de Recuperação de Senha:
+            //BOTÃO DE RECUPERAÇÃO DE SENHA:
             Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 24, 0),
               child: Container(
@@ -78,47 +78,15 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
             ),
-            //Botão de LOGIN:
-            Padding(
-              padding: const EdgeInsets.fromLTRB(80, 40, 80, 0),
-              child: Container(
-                height: 60,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    stops: [0.3, 1],
-                    colors: [
-                      Color(0xFFBBDEFB),
-                      Color(0XFF0D47A1),
-                    ],
-                  ),
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(5),
-                  ),
-                ),
-                //Faz o botão ocupar todo o espaço do container:
-                child: SizedBox.expand(
-                  child: TextButton(
-                    onPressed: () {
-                      _doLogin();
-                    },
-                    child: const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            //BOTÃO DE LOGIN:
+            ButtonBlueGradient(
+              textButton: 'Login',
+              functionExecuteOnPressed: _doLogin,
             ),
             //BOTÃO PARA ENTRAR SEM LOGIN:
             Padding(
               padding: const EdgeInsets.fromLTRB(80, 8, 80, 0),
-              child: Container(
+              child: SizedBox(
                 height: 60,
                 child: TextButton(
                   onPressed: () {},
@@ -148,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       MaterialPageRoute(builder: (context) {
-        return RecoveryPass();
+        return const RecoveryPass();
       }),
     );
   }
