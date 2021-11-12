@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:loginscreen/screens/login.dart';
-import 'package:loginscreen/screens/recover_password.dart';
+import 'package:loginscreen/screens/types_reservations.dart';
+
+import 'others/test.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,9 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Login',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.lightBlue,
       ),
-      home: const LoginPage(),
+      home: TypesReservations(),
     );
   }
 }
