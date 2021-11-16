@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:loginscreen/screens/types_reservations.dart';
+import 'package:loginscreen/screens/user_reservations_dashboard.dart';
 
 import 'others/test.dart';
 
@@ -19,7 +20,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: TypesReservations(),
+      home: UserReservationDashboard(
+        nameUser: 'Guilherme',
+      ),
+      //UserReservationDashboard(nameUser: 'Pedro'),
     );
   }
 }

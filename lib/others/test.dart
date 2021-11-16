@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginscreen/components/button_blue_gradient.dart';
 import 'package:loginscreen/components/button_type_reservation.dart';
 
 class Test extends StatelessWidget {
@@ -8,22 +9,7 @@ class Test extends StatelessWidget {
   Widget build(BuildContext context) {
     //USANDO FORM
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Nova reserva'),
-        centerTitle: true,
-        elevation: 4.0,
-        actions: [
-          //BOTÃO DO PERFIL
-          IconButton(
-            icon: const Icon(
-              Icons.account_circle_outlined,
-              size: 32,
-            ),
-            onPressed: () {},
-            padding: const EdgeInsets.fromLTRB(8, 8, 24, 8),
-          ),
-        ],
-      ),
+      appBar: AppBar(),
     );
   }
 }

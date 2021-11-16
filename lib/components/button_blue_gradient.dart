@@ -4,9 +4,11 @@ class ButtonBlueGradient extends StatefulWidget {
   final Function? functionExecuteOnPressed;
   final String textButton;
   //Construtor recebe a função que será executada no enPressed.
-  const ButtonBlueGradient(
-      {Key? key, this.functionExecuteOnPressed, required this.textButton})
-      : super(key: key);
+  const ButtonBlueGradient({
+    Key? key,
+    this.functionExecuteOnPressed,
+    required this.textButton,
+  }) : super(key: key);
 
   @override
   _ButtonBlueGradientState createState() => _ButtonBlueGradientState();
