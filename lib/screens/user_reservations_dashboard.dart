@@ -2,9 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserReservationDashboard extends StatefulWidget {
-  String nameUser;
+  final String nameUser;
 
-  UserReservationDashboard({
+  const UserReservationDashboard({
     Key? key,
     required this.nameUser,
   }) : super(key: key);
@@ -18,16 +18,18 @@ class _UserReservationsState extends State<UserReservationDashboard> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100.0,
+        toolbarHeight: 70.0,
         actions: [
           //'expanded' faz o widget preencher todo o espaço disponível do pai.
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 //NOME USUÁRIO:
                 Expanded(
+                  flex: 2,
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(8, 45, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(8, 24.0, 0, 0),
                     child: Text(
                       'Olá, ' + widget.nameUser,
                       maxLines: 2,
@@ -37,39 +39,19 @@ class _UserReservationsState extends State<UserReservationDashboard> {
                     ),
                   ),
                 ),
-                //BOTÃO DE NOVA RESERVA:
-                Expanded(
-                  child: Container(
-                    height: 40.0,
-                    //Estilo do botão:
-                    decoration: const BoxDecoration(
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        stops: [0.1, 1],
-                        colors: [
-                          Color(0xFF84FFFF),
-                          Color(0xFF18FFFF),
-                        ],
+                //TÍTULO PÁGINA:
+                const Expanded(
+                    flex: 6,
+                    child: Text(
+                      'Reservas',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: 24.0,
                       ),
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(5),
-                      ),
-                    ),
-                    child: TextButton(
-                      child: const Text(
-                        'Nova Reserva',
-                        style: TextStyle(
-                          fontSize: 16.0,
-                          color: Colors.black,
-                        ),
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
-                ),
+                    )),
                 //ÍCONE PERFIL DO USUÁRIO:
                 Expanded(
+                  flex: 2,
                   child: IconButton(
                     icon: const Icon(
                       Icons.account_circle_outlined,
@@ -83,7 +65,41 @@ class _UserReservationsState extends State<UserReservationDashboard> {
           ),
         ],
       ),
-      // body: ,
+      body: Column(
+        children: [
+          //BOTÕES DE SELEÇÃO:
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Botão1'),
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Botão2'),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          //LIST DE RESERVAS:
+          //ListView(),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(
+          Icons.add,
+          size: 36.0,
+        ),
+        onPressed: () {},
+      ),
     );
   }
 }

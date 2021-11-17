@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.lightBlue,
       ),
       home: UserReservationDashboard(
-        nameUser: 'Guilherme',
+        nameUser: 'Antonio',
       ),
       //UserReservationDashboard(nameUser: 'Pedro'),
     );
