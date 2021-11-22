@@ -6,3 +6,10 @@ String? validadeInput(
   }
   return null;
 }
+
+String? validadeLength(String valueInput, String? errorMsg) {
+  if (valueInput.length < 4) {
+    return errorMsg;
+  }
+  return null;
+}

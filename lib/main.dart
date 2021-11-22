@@ -21,7 +21,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: NewReservation(),
+      home: NewReservation(
+        nameReservation: 'Transporte Terrestre',
+      ),
       //UserReservationDashboard(nameUser: 'Pedro'),
     );
   }
