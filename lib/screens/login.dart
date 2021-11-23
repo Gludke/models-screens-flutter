@@ -81,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
             //BOTÃO DE LOGIN:
             ButtonBlueGradient(
               textButton: 'Login',
-              functionExecuteOnPressed: _doLogin,
+              click: _doLogin,
             ),
             //BOTÃO PARA ENTRAR SEM LOGIN:
             Padding(

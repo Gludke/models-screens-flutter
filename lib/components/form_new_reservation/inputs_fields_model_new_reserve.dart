@@ -11,6 +11,10 @@ class FieldInputNewReserve extends StatelessWidget {
   final double? paddingTop;
   final OutlineInputBorder? border;
   final int? maxLines;
+  final double? labelFontSize;
+  final double? fontSize;
+  final String? hintText;
+  final int? maxLength;
 
   const FieldInputNewReserve(
       {Key? key,
@@ -22,6 +26,10 @@ class FieldInputNewReserve extends StatelessWidget {
       this.msgError,
       this.border,
       this.maxLines,
+      this.labelFontSize,
+      this.fontSize,
+      this.hintText,
+      this.maxLength,
       this.paddingTop})
       : super(key: key);
 
@@ -30,6 +38,7 @@ class FieldInputNewReserve extends StatelessWidget {
     return Padding(
       padding: EdgeInsets.fromLTRB(0, (paddingTop ?? 0), 0, 0),
       child: TextFormField(
+        maxLength: maxLength,
         controller: controller,
         validator: (valueInput) {
           //Só funciona se a propriedade Não for nula e não estiver vazia:
@@ -37,14 +46,14 @@ class FieldInputNewReserve extends StatelessWidget {
             return validadeLength(valueInput!, msgError);
           }
         },
-        style: const TextStyle(
-          fontSize: 24.0,
+        style: TextStyle(
+          fontSize: fontSize ?? 24.0,
         ),
         decoration: InputDecoration(
+          hintText: hintText,
+          hintStyle: const TextStyle(fontSize: 14),
           labelText: labelTextOfInput, //Título da label
-          labelStyle: const TextStyle(
-            fontSize: 20,
-          ),
+          labelStyle: TextStyle(fontSize: labelFontSize ?? 20),
           border: border,
         ),
         keyboardType: textInputType,

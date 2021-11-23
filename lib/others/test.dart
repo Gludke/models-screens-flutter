@@ -2,44 +2,50 @@ import 'package:flutter/material.dart';
 import 'package:loginscreen/components/button_blue_gradient.dart';
 import 'package:loginscreen/components/button_type_reservation.dart';
 
-class Test extends StatelessWidget {
+class Test extends StatefulWidget {
   const Test({Key? key}) : super(key: key);
+
+  @override
+  _TestState createState() => _TestState();
+}
+
+class _TestState extends State<Test> {
+  bool isVisible = true;
 
   @override
   Widget build(BuildContext context) {
     //USANDO FORM
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Testando Visibility'),
+      ),
+      body: Column(
+        children: [
+          Visibility(
+            visible: isVisible,
+            child: Column(
+              children: [
+                Container(height: 10),
+                Container(height: 100, width: 100, color: Colors.black),
+              ],
+            ),
+          ),
+          Container(height: 10),
+          Container(height: 100, width: 100, color: Colors.blue),
+          Container(height: 10),
+          Container(height: 100, width: 100, color: Colors.red),
+          ButtonBlueGradient(
+            paddingLeft: 0,
+            paddingRight: 0,
+            textButton: 'Testando..',
+            click: () => validateForm(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  validateForm() {
+    setState(() => isVisible = !isVisible);
   }
 }
-
-// //BOTÃO DE NOVA RESERVA:
-//                 Expanded(
-//                   child: Container(
-//                     height: 40.0,
-//                     //Estilo do botão:
-//                     decoration: const BoxDecoration(
-//                       gradient: LinearGradient(
-//                         begin: Alignment.topLeft,
-//                         end: Alignment.bottomRight,
-//                         stops: [0.1, 1],
-//                         colors: [
-//                           Color(0xFF84FFFF),
-//                           Color(0xFF18FFFF),
-//                         ],
-//                       ),
-//                       borderRadius: BorderRadius.all(
-//                         Radius.circular(5),
-//                       ),
-//                     ),
-//                     child: TextButton(
-//                       child: const Text(
-//                         'Nova Reserva',
-//                         style: TextStyle(
-//                           fontSize: 16.0,
-//                           color: Colors.black,
-//                         ),
-//                       ),
-//                       onPressed: () {},
-//                     ),
-//                   ),
-//                 ),

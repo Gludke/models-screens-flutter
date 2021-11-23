@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
 class ButtonBlueGradient extends StatefulWidget {
-  final Function? functionExecuteOnPressed;
+  final Function() click;
   final String textButton;
-  //Construtor recebe a função que será executada no enPressed.
-  const ButtonBlueGradient({
-    Key? key,
-    this.functionExecuteOnPressed,
-    required this.textButton,
-  }) : super(key: key);
+  final double? paddingLeft;
+  final double? paddingRight;
+  const ButtonBlueGradient(
+      {Key? key,
+      required this.click,
+      required this.textButton,
+      this.paddingLeft,
+      this.paddingRight})
+      : super(key: key);
 
   @override
   _ButtonBlueGradientState createState() => _ButtonBlueGradientState();
@@ -18,7 +21,8 @@ class _ButtonBlueGradientState extends State<ButtonBlueGradient> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(80, 40, 80, 0),
+      padding: EdgeInsets.fromLTRB(
+          (widget.paddingLeft ?? 80), 40, (widget.paddingRight ?? 80), 0),
       child: Container(
         height: 60,
         alignment: Alignment.center,
@@ -39,9 +43,7 @@ class _ButtonBlueGradientState extends State<ButtonBlueGradient> {
         //Faz o botão ocupar todo o espaço do container:
         child: SizedBox.expand(
           child: TextButton(
-            onPressed: () {
-              widget.functionExecuteOnPressed?.call();
-            },
+            onPressed: widget.click,
             child: Text(
               widget.textButton,
               style: const TextStyle(

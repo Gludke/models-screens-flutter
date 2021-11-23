@@ -46,7 +46,7 @@ class _RecoveryPassState extends State<RecoveryPass> {
         //BOTÃO DE RECUPERAÇÃO DE SENHA
         ButtonBlueGradient(
           textButton: 'Solicitar Senha',
-          functionExecuteOnPressed: _recoveryPass,
+          click: _recoveryPass,
         ),
       ]),
     );

@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
       home: NewReservation(
         nameReservation: 'Transporte Terrestre',
       ),
-      //UserReservationDashboard(nameUser: 'Pedro'),
     );
   }
 }
