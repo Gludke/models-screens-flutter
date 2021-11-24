@@ -21,17 +21,18 @@ class _NewReservationState extends State<NewReservation> {
   final tableTest =
       TestVehicle.listTestVehicles; //TABELA DE TESTE PARA O LISTVIEW
   //### VARS PARA DROPDAWN:
-  final String delayHoursOrigin = '0';
-  final String delayHoursDestiny = '0';
-  final String dropdownPaymentMethod = 'Faturado';
+  String delayHoursOrigin = '0';
+  String delayHoursDestiny = '0';
+  String dropdownPaymentMethod = '';
   //###
   //### VARS PARA DATAS E TEMPO:
   late DateTime? dateStartReserve = null;
   late TimeOfDay? timeStartReserve = null;
   //###
   //### VARS DE VISIBILIDADES DE WIDGETS:
-  bool listPricesVisibility = false;
-  bool dateAndTimeVisibility = false;
+  bool formVisibility = false;
+  bool formCreditPaymentVisibility = false;
+  bool dateAndTimeErrorVisibility = false;
   //###
   //### CONTROLLERS CARTÃO DE CRÉDITO:
   final TextEditingController _controllerCardNumber = TextEditingController();
@@ -52,7 +53,8 @@ class _NewReservationState extends State<NewReservation> {
   @override
   Widget build(BuildContext context) {
     if (true) {
-      //COLOCAR VISIBILIDADE AQUI
+      //COLOCAR VISIBILIDADE AQUI - var - dropdownPaymentMethod
+      print('VALOR: ' + dropdownPaymentMethod);
     }
 
     return Scaffold(
@@ -120,7 +122,7 @@ class _NewReservationState extends State<NewReservation> {
                   ),
                   //MSG DE ERRO DATA E HORÁRIO
                   Visibility(
-                    visible: dateAndTimeVisibility,
+                    visible: dateAndTimeErrorVisibility,
                     child: Column(
                       children: [
                         Container(height: 10),
@@ -193,140 +195,161 @@ class _NewReservationState extends State<NewReservation> {
                       paddingRight: 0,
                       textButton: 'Calcular cotações',
                       click: _doNewReserve),
-                  //LISTA DE VEÍCULOS DISPONÍVEIS
                   Visibility(
-                    visible: listPricesVisibility,
-                    child: ListView.separated(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      shrinkWrap: true,
-                      separatorBuilder: (_, _____) => const Divider(),
-                      itemCount: tableTest.length,
-                      itemBuilder: (context, vehicle) {
-                        return ListTile(
-                          leading: Image.asset(tableTest[vehicle].icon),
-                          title: Text(
-                            'Valor: ' +
-                                tableTest[vehicle].value.toString() +
-                                ' + Taxa: ' +
-                                tableTest[vehicle].rate.toString() +
-                                ' = ' +
-                                tableTest[vehicle].total.toString(),
-                            style: const TextStyle(fontWeight: FontWeight.w700),
+                    visible: formVisibility,
+                    child: Column(
+                      children: [
+                        //LISTA DE VEÍCULOS DISPONÍVEIS
+                        ListView.separated(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          shrinkWrap: true,
+                          separatorBuilder: (_, _____) => const Divider(),
+                          itemCount: tableTest.length,
+                          itemBuilder: (context, vehicle) {
+                            return ListTile(
+                              leading: Image.asset(tableTest[vehicle].icon),
+                              title: Text(
+                                'Valor: ' +
+                                    tableTest[vehicle].value.toString() +
+                                    ' + Taxa: ' +
+                                    tableTest[vehicle].rate.toString() +
+                                    ' = ' +
+                                    tableTest[vehicle].total.toString(),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            );
+                          },
+                        ),
+                        //CAMPO DADOS DO PASSAGEIRO
+                        FieldInputNewReserve(
+                          controller: _controllerFieldPassengers,
+                          minCharacters: 4,
+                          activeValidator: false,
+                          labelFontSize: 20.0,
+                          fontSize: 16.0,
+                          labelTextOfInput: 'Dados do(s) passageiro(s)',
+                          textInputType: TextInputType.text,
+                          maxLength: 160,
+                          maxLines: 3,
+                        ),
+                        //TELEFONE DE CONTATO
+                        FieldInputNewReserve(
+                          controller: _controllerFieldPhone,
+                          minCharacters: 4,
+                          labelTextOfInput: 'Telefone de contato',
+                          labelFontSize: 20.0,
+                          hintText: 'Digite apenas números',
+                          activeValidator: false,
+                          textInputType: TextInputType.streetAddress,
+                          maxLength: 9,
+                          paddingTop: 36,
+                          border: const OutlineInputBorder(),
+                        ),
+                        //CAMPO INFORMAÇÕES ADICIONAIS
+                        FieldInputNewReserve(
+                          controller: _controllerFieldMoreInformation,
+                          minCharacters: 4,
+                          activeValidator: false,
+                          labelFontSize: 16.0,
+                          fontSize: 16.0,
+                          labelTextOfInput:
+                              'Orientações para o receptivo: (placa, código,\n identificador, observações, etc.)',
+                          textInputType: TextInputType.text,
+                          maxLength: 160,
+                          maxLines: 3,
+                        ),
+                        //OPÇÕES DE PAGAMENTO
+                        Container(height: 20.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            const Text('Forma de pagamento:  ',
+                                style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.w700)),
+                            DropDownPaymentMethods(
+                              dropValueReturn: dropdownPaymentMethod,
+                            ),
+                          ],
+                        ),
+                        //UASHDUAHSUHUHASU
+                        FieldInputNewReserve(
+                          controller: _controllerCardNumber,
+                          minCharacters: 4,
+                          labelTextOfInput: 'Número do cartão*',
+                          activeValidator: false,
+                          textInputType: TextInputType.number,
+                          paddingTop: 16,
+                          border: const OutlineInputBorder(),
+                        ),
+                        //OPÇÕES PARA PAGAMENTO COM CARTÃO DE CRÉDITO
+                        Visibility(
+                          visible: true, //formCreditPaymentVisibility,
+                          child: Column(
+                            children: [
+                              FieldInputNewReserve(
+                                controller: _controllerCardNumber,
+                                minCharacters: 4,
+                                labelTextOfInput: 'Número do cartão*',
+                                activeValidator: false,
+                                textInputType: TextInputType.number,
+                                paddingTop: 16,
+                                border: const OutlineInputBorder(),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: FieldInputNewReserve(
+                                      controller: _controllerCardNumber,
+                                      minCharacters: 4,
+                                      labelTextOfInput: 'Validade',
+                                      activeValidator: false,
+                                      textInputType: TextInputType.number,
+                                      paddingTop: 16,
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                  ),
+                                  Container(width: 10.0),
+                                  Expanded(
+                                    child: FieldInputNewReserve(
+                                      controller: _controllerCardNumber,
+                                      minCharacters: 4,
+                                      labelTextOfInput: 'Cod. segurança',
+                                      hintText: '3 digitos atrás do cartão',
+                                      activeValidator: false,
+                                      textInputType: TextInputType.number,
+                                      paddingTop: 16,
+                                      border: const OutlineInputBorder(),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              FieldInputNewReserve(
+                                controller: _controllerCardNumber,
+                                minCharacters: 4,
+                                labelTextOfInput: 'Nome do Titular',
+                                activeValidator: false,
+                                textInputType: TextInputType.number,
+                                paddingTop: 16,
+                                border: const OutlineInputBorder(),
+                              ),
+                            ],
                           ),
-                        );
-                      },
+                        ),
+
+                        //BOTÃO SUBMIT - SOLICITAR RESERVA
+                        ButtonBlueGradient(
+                          paddingLeft: 0,
+                          paddingRight: 0,
+                          textButton: 'Solicitar reserva',
+                          click: () {},
+                        ),
+                      ],
                     ),
-                  ),
-                  //CAMPO DADOS DO PASSAGEIRO
-                  FieldInputNewReserve(
-                    controller: _controllerFieldPassengers,
-                    minCharacters: 4,
-                    activeValidator: false,
-                    labelFontSize: 20.0,
-                    fontSize: 16.0,
-                    labelTextOfInput: 'Dados do(s) passageiro(s)',
-                    textInputType: TextInputType.text,
-                    maxLength: 160,
-                    maxLines: 3,
-                  ),
-                  //TELEFONE DE CONTATO
-                  FieldInputNewReserve(
-                    controller: _controllerFieldPhone,
-                    minCharacters: 4,
-                    labelTextOfInput: 'Telefone de contato',
-                    labelFontSize: 20.0,
-                    hintText: 'Digite apenas números',
-                    activeValidator: false,
-                    textInputType: TextInputType.streetAddress,
-                    maxLength: 9,
-                    paddingTop: 36,
-                    border: const OutlineInputBorder(),
-                  ),
-                  //CAMPO INFORMAÇÕES ADICIONAIS
-                  FieldInputNewReserve(
-                    controller: _controllerFieldMoreInformation,
-                    minCharacters: 4,
-                    activeValidator: false,
-                    labelFontSize: 16.0,
-                    fontSize: 16.0,
-                    labelTextOfInput:
-                        'Orientações para o receptivo: (placa, código,\n identificador, observações, etc.)',
-                    textInputType: TextInputType.text,
-                    maxLength: 160,
-                    maxLines: 3,
-                  ),
-                  //OPÇÕES DE PAGAMENTO
-                  Container(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text('Forma de pagamento:  ',
-                          style: TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.w700)),
-                      DropDownPaymentMethods(
-                          dropdownPaymentMethod: dropdownPaymentMethod),
-                    ],
-                  ),
-                  //OPÇÕES PARA PAGAMENTO COM CARTÃO DE CRÉDITO
-                  FieldInputNewReserve(
-                    controller: _controllerCardNumber,
-                    minCharacters: 4,
-                    labelTextOfInput: 'Número do cartão*',
-                    activeValidator: false,
-                    textInputType: TextInputType.number,
-                    paddingTop: 16,
-                    border: const OutlineInputBorder(),
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: FieldInputNewReserve(
-                          controller: _controllerCardNumber,
-                          minCharacters: 4,
-                          labelTextOfInput: 'Validade',
-                          activeValidator: false,
-                          textInputType: TextInputType.number,
-                          paddingTop: 16,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                      Container(width: 10.0),
-                      Expanded(
-                        child: FieldInputNewReserve(
-                          controller: _controllerCardNumber,
-                          minCharacters: 4,
-                          labelTextOfInput: 'Cod. segurança',
-                          hintText: '3 digitos atrás do cartão',
-                          activeValidator: false,
-                          textInputType: TextInputType.number,
-                          paddingTop: 16,
-                          border: const OutlineInputBorder(),
-                        ),
-                      ),
-                    ],
-                  ),
-                  FieldInputNewReserve(
-                    controller: _controllerCardNumber,
-                    minCharacters: 4,
-                    labelTextOfInput: 'Nome do Titular',
-                    activeValidator: false,
-                    textInputType: TextInputType.number,
-                    paddingTop: 16,
-                    border: const OutlineInputBorder(),
                   ),
                 ],
               ),
-            ),
-          ),
-          //BOTÃO SUBMIT - SOLICITAR RESERVA
-          Padding(
-            padding:
-                const EdgeInsets.only(bottom: 32.0, left: 16.0, right: 16.0),
-            child: ButtonBlueGradient(
-              paddingLeft: 0,
-              paddingRight: 0,
-              textButton: 'Solicitar reserva',
-              click: () {},
             ),
           ),
         ],
@@ -341,14 +364,14 @@ class _NewReservationState extends State<NewReservation> {
     if (_formNewReserveKey.currentState?.validate() ?? false) {
       if (timeStartReserve != null && dateStartReserve != null) {
         setState(() {
-          listPricesVisibility = true;
-          dateAndTimeVisibility = false;
+          formVisibility = true;
+          dateAndTimeErrorVisibility = false;
         });
       } else {
-        setState(() => dateAndTimeVisibility = true);
+        setState(() => dateAndTimeErrorVisibility = true);
       }
     } else {
-      setState(() => dateAndTimeVisibility = true);
+      setState(() => dateAndTimeErrorVisibility = true);
     }
   }
 

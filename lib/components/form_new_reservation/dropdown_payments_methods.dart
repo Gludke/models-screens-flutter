@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 
 /// This is the stateful widget that the main application instantiates.
 class DropDownPaymentMethods extends StatefulWidget {
-  String dropdownPaymentMethod;
-  DropDownPaymentMethods({Key? key, required this.dropdownPaymentMethod})
+  String dropdownPaymentMethod = 'Faturado';
+  String? dropValueReturn;
+  DropDownPaymentMethods({Key? key, required this.dropValueReturn})
       : super(key: key);
 
   @override
@@ -14,6 +15,8 @@ class DropDownPaymentMethods extends StatefulWidget {
 class _StateDropDownPaymentMethods extends State<DropDownPaymentMethods> {
   @override
   Widget build(BuildContext context) {
+    //print(widget.dropdownPaymentMethod);
+
     return DropdownButton<String>(
       value: widget.dropdownPaymentMethod,
       elevation: 16,
@@ -22,11 +25,6 @@ class _StateDropDownPaymentMethods extends State<DropDownPaymentMethods> {
       //   height: 1,
       //   color: Colors.black,
       // ),
-      onChanged: (String? newValue) {
-        setState(() {
-          widget.dropdownPaymentMethod = newValue!;
-        });
-      },
       items: <String>['Faturado', 'Cartão de crédito', 'Cash']
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
@@ -34,6 +32,12 @@ class _StateDropDownPaymentMethods extends State<DropDownPaymentMethods> {
           child: Text(value),
         );
       }).toList(),
+      onChanged: (String? newValue) {
+        setState(() {
+          widget.dropdownPaymentMethod = newValue!;
+          widget.dropValueReturn = newValue;
+        });
+      },
     );
   }
 }
