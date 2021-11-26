@@ -15,6 +15,7 @@ class FieldInputNewReserve extends StatelessWidget {
   final double? fontSize;
   final String? hintText;
   final int? maxLength;
+  final bool? obscureText;
 
   const FieldInputNewReserve(
       {Key? key,
@@ -30,6 +31,7 @@ class FieldInputNewReserve extends StatelessWidget {
       this.fontSize,
       this.hintText,
       this.maxLength,
+      this.obscureText,
       this.paddingTop})
       : super(key: key);
 
@@ -58,6 +60,9 @@ class FieldInputNewReserve extends StatelessWidget {
         ),
         keyboardType: textInputType,
         maxLines: maxLines,
+        obscureText: (maxLines == 1
+            ? obscureText!
+            : false), //essa prop só funciona com 1 linha em maxLines.
       ),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loginscreen/screens/new_reservation.dart';
 import 'package:loginscreen/screens/types_reservations.dart';
+import 'package:loginscreen/screens/user_profile.dart';
 import 'package:loginscreen/screens/user_reservations_dashboard.dart';
 
 import 'others/test.dart';
@@ -21,9 +22,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: NewReservation(
-        nameReservation: 'Transporte Terrestre',
-      ),
+      home: UserProfile(),
+
+      //UserReservationDashboard(nameUser: 'Nome usuário'),
     );
   }
 }
