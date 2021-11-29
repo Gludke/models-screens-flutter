@@ -22,9 +22,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.lightBlue,
       ),
-      home: UserProfile(),
-
-      //UserReservationDashboard(nameUser: 'Nome usuário'),
+      home: NewReservation(
+        nameReservation: 'Transporte Terrestre',
+      ),
     );
   }
 }

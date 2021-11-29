@@ -5,11 +5,13 @@ class ButtonBlueGradient extends StatefulWidget {
   final String textButton;
   final double? paddingLeft;
   final double? paddingRight;
+  final double? paddingTop;
   const ButtonBlueGradient(
       {Key? key,
       required this.click,
       required this.textButton,
       this.paddingLeft,
+      this.paddingTop,
       this.paddingRight})
       : super(key: key);
 
@@ -21,8 +23,8 @@ class _ButtonBlueGradientState extends State<ButtonBlueGradient> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.fromLTRB(
-          (widget.paddingLeft ?? 80), 40, (widget.paddingRight ?? 80), 0),
+      padding: EdgeInsets.fromLTRB((widget.paddingLeft ?? 80),
+          (widget.paddingTop ?? 40), (widget.paddingRight ?? 80), 0),
       child: Container(
         height: 60,
         alignment: Alignment.center,

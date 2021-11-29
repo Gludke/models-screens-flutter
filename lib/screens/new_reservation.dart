@@ -3,6 +3,7 @@ import 'package:loginscreen/components/button_blue_gradient.dart';
 import 'package:loginscreen/components/form_new_reservation/dropdown_delay_hours.dart';
 import 'package:loginscreen/components/form_new_reservation/dropdown_payments_methods.dart';
 import 'package:loginscreen/components/form_new_reservation/inputs_fields_model_new_reserve.dart';
+import 'package:loginscreen/components/msg_error.dart';
 import 'package:loginscreen/others/test_vehicle.dart';
 
 class NewReservation extends StatefulWidget {
@@ -40,6 +41,7 @@ class _NewReservationState extends State<NewReservation> {
   final TextEditingController _controllerSecurityCode = TextEditingController();
   final TextEditingController _controllerTitularName = TextEditingController();
   //###
+  final TextEditingController _controllerCostCenter = TextEditingController();
   final TextEditingController _controllerFieldOrigin = TextEditingController();
   final TextEditingController _controllerFieldDestiny = TextEditingController();
   final TextEditingController _controllerFieldMoreInformation =
@@ -52,11 +54,6 @@ class _NewReservationState extends State<NewReservation> {
 
   @override
   Widget build(BuildContext context) {
-    if (true) {
-      //COLOCAR VISIBILIDADE AQUI - var - dropdownPaymentMethod
-      print('VALOR: ' + dropdownPaymentMethod);
-    }
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -121,16 +118,10 @@ class _NewReservationState extends State<NewReservation> {
                     ),
                   ),
                   //MSG DE ERRO DATA E HORÁRIO
-                  Visibility(
-                    visible: dateAndTimeErrorVisibility,
-                    child: Column(
-                      children: [
-                        Container(height: 10),
-                        const Text('Favor selecionar data e horário da reserva',
-                            style: TextStyle(fontSize: 12, color: Colors.red)),
-                      ],
-                    ),
-                  ),
+                  MsgError(
+                      visible: dateAndTimeErrorVisibility,
+                      msgError: 'Favor selecionar data e horário da reserva',
+                      fontSize: 12.0),
                   //CAMPO ORIGEM DA VIAGEM
                   FieldInputNewReserve(
                     controller: _controllerFieldOrigin,
@@ -273,11 +264,11 @@ class _NewReservationState extends State<NewReservation> {
                             ),
                           ],
                         ),
-                        //UASHDUAHSUHUHASU
+                        //
                         FieldInputNewReserve(
-                          controller: _controllerCardNumber,
+                          controller: _controllerCostCenter,
                           minCharacters: 4,
-                          labelTextOfInput: 'Número do cartão*',
+                          labelTextOfInput: 'Centro de custo',
                           activeValidator: false,
                           textInputType: TextInputType.number,
                           paddingTop: 16,
@@ -301,9 +292,9 @@ class _NewReservationState extends State<NewReservation> {
                                 children: [
                                   Expanded(
                                     child: FieldInputNewReserve(
-                                      controller: _controllerCardNumber,
+                                      controller: _controllerValidity,
                                       minCharacters: 4,
-                                      labelTextOfInput: 'Validade',
+                                      labelTextOfInput: 'Validade*',
                                       activeValidator: false,
                                       textInputType: TextInputType.number,
                                       paddingTop: 16,
@@ -313,9 +304,9 @@ class _NewReservationState extends State<NewReservation> {
                                   Container(width: 10.0),
                                   Expanded(
                                     child: FieldInputNewReserve(
-                                      controller: _controllerCardNumber,
+                                      controller: _controllerSecurityCode,
                                       minCharacters: 4,
-                                      labelTextOfInput: 'Cod. segurança',
+                                      labelTextOfInput: 'Cod. segurança*',
                                       hintText: '3 digitos atrás do cartão',
                                       activeValidator: false,
                                       textInputType: TextInputType.number,
@@ -326,9 +317,9 @@ class _NewReservationState extends State<NewReservation> {
                                 ],
                               ),
                               FieldInputNewReserve(
-                                controller: _controllerCardNumber,
+                                controller: _controllerTitularName,
                                 minCharacters: 4,
-                                labelTextOfInput: 'Nome do Titular',
+                                labelTextOfInput: 'Nome do Titular*',
                                 activeValidator: false,
                                 textInputType: TextInputType.number,
                                 paddingTop: 16,
