@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:loginscreen/components/button_blue_gradient.dart';
-import 'package:loginscreen/components/form_new_reservation/dropdown_delay_hours.dart';
-import 'package:loginscreen/components/form_new_reservation/dropdown_payments_methods.dart';
-import 'package:loginscreen/components/form_new_reservation/inputs_fields_model_new_reserve.dart';
-import 'package:loginscreen/components/msg_error.dart';
-import 'package:loginscreen/others/test_vehicle.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class NewReservation extends StatefulWidget {
   final String nameReservation;
@@ -19,8 +14,6 @@ class NewReservation extends StatefulWidget {
 }
 
 class _NewReservationState extends State<NewReservation> {
-  final tableTest =
-      TestVehicle.listTestVehicles; //TABELA DE TESTE PARA O LISTVIEW
   //### VARS PARA DROPDAWN:
   String delayHoursOrigin = '0';
   String delayHoursDestiny = '0';
@@ -34,6 +27,7 @@ class _NewReservationState extends State<NewReservation> {
   bool formVisibility = false;
   bool formCreditPaymentVisibility = false;
   bool dateAndTimeErrorVisibility = false;
+  bool whatsappContactVisibility = false;
   //###
   //### CONTROLLERS CARTÃO DE CRÉDITO:
   final TextEditingController _controllerCardNumber = TextEditingController();
@@ -180,6 +174,21 @@ class _NewReservationState extends State<NewReservation> {
                       ),
                     ],
                   ),
+                  //CONTATO WHATS EM CASO DE RESERVA 'D-24H':
+                  MsgError(
+                      visible: whatsappContactVisibility,
+                      msgError:
+                          'Reservas com menos de 24 horas de antecedência precisam ser tratadas previamente com nosso atendimento. Por favor, contate nosso atendimento especializado via Whatsapp:',
+                      fontSize: 14.0),
+                  Container(
+                    height: 10.0,
+                  ),
+                  DefaultButton(
+                    visible: whatsappContactVisibility,
+                    backgroundColor: Colors.green,
+                    text: 'Abrir no Whatsapp',
+                    save: () => _openWhatsappSuportContact(),
+                  ),
                   //BOTÃO DE CÁLCULO DE COTAÇÕES
                   ButtonBlueGradient(
                       paddingLeft: 0,
@@ -191,27 +200,27 @@ class _NewReservationState extends State<NewReservation> {
                     child: Column(
                       children: [
                         //LISTA DE VEÍCULOS DISPONÍVEIS
-                        ListView.separated(
-                          padding: const EdgeInsets.only(top: 16.0),
-                          shrinkWrap: true,
-                          separatorBuilder: (_, _____) => const Divider(),
-                          itemCount: tableTest.length,
-                          itemBuilder: (context, vehicle) {
-                            return ListTile(
-                              leading: Image.asset(tableTest[vehicle].icon),
-                              title: Text(
-                                'Valor: ' +
-                                    tableTest[vehicle].value.toString() +
-                                    ' + Taxa: ' +
-                                    tableTest[vehicle].rate.toString() +
-                                    ' = ' +
-                                    tableTest[vehicle].total.toString(),
-                                style: const TextStyle(
-                                    fontWeight: FontWeight.w700),
-                              ),
-                            );
-                          },
-                        ),
+                        // ListView.separated(
+                        //   padding: const EdgeInsets.only(top: 16.0),
+                        //   shrinkWrap: true,
+                        //   separatorBuilder: (_, _____) => const Divider(),
+                        //   itemCount: tableTest.length,
+                        //   itemBuilder: (context, vehicle) {
+                        //     return ListTile(
+                        //       leading: Image.asset(tableTest[vehicle].icon),
+                        //       title: Text(
+                        //         'Valor: ' +
+                        //             tableTest[vehicle].value.toString() +
+                        //             ' + Taxa: ' +
+                        //             tableTest[vehicle].rate.toString() +
+                        //             ' = ' +
+                        //             tableTest[vehicle].total.toString(),
+                        //         style: const TextStyle(
+                        //             fontWeight: FontWeight.w700),
+                        //       ),
+                        //     );
+                        //   },
+                        // ),
                         //CAMPO DADOS DO PASSAGEIRO
                         FieldInputNewReserve(
                           controller: _controllerFieldPassengers,
@@ -352,15 +361,25 @@ class _NewReservationState extends State<NewReservation> {
 
   void _doNewReserve() async {
     //Valida os campos do formulário. Em caso de erro, mostra a msg definida.
-    if (_formNewReserveKey.currentState?.validate() ?? false) {
-      if (timeStartReserve != null && dateStartReserve != null) {
+    if (_formNewReserveKey.currentState!.validate() &&
+        timeStartReserve != null &&
+        dateStartReserve != null) {
+      //Checa se a data é D-24h:
+      var intervalTime =
+          _calculateIntervalTime(dateStartReserve!, timeStartReserve!);
+      if (intervalTime! <= 1440) {
         setState(() {
-          formVisibility = true;
+          whatsappContactVisibility = true;
           dateAndTimeErrorVisibility = false;
+          formVisibility = false;
         });
-      } else {
-        setState(() => dateAndTimeErrorVisibility = true);
+        return;
       }
+      setState(() {
+        formVisibility = true;
+        dateAndTimeErrorVisibility = false;
+        whatsappContactVisibility = false;
+      });
     } else {
       setState(() => dateAndTimeErrorVisibility = true);
     }
@@ -409,5 +428,25 @@ class _NewReservationState extends State<NewReservation> {
     if (newTime == null) return;
     //Não sendo nulo, vamos atualizar nosso state do form:
     setState(() => timeStartReserve = newTime);
+  }
+
+  int? _calculateIntervalTime(
+      DateTime dateStartReserve, TimeOfDay timeStartReserve) {
+    //Construir a data selecionada pelo usuário:
+    var userdate = DateTime(dateStartReserve.year, dateStartReserve.month,
+        dateStartReserve.day, timeStartReserve.hour, timeStartReserve.minute);
+    // debugPrint(userdate.difference(DateTime.now()).inMinutes.toString());c
+    return userdate.difference(DateTime.now()).inMinutes;
+  }
+
+  _openWhatsappSuportContact() async {
+    var whatsappUrl =
+        "whatsapp://send?phone=+5586994324465&text=Olá,tudo bem ?";
+
+    if (await canLaunch(whatsappUrl)) {
+      await launch(whatsappUrl);
+    } else {
+      throw 'Could not launch $whatsappUrl';
+    }
   }
 }

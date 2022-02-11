@@ -109,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _doLogin() async {
     //Valida os campos do formulário. Em caso de erro, mostra a msg definida.
-    _formLoginKey.currentState?.validate();
+    _formLoginKey.currentState!.validate();
   }
 
   void _openPageRecoveryPass(BuildContext context) {
